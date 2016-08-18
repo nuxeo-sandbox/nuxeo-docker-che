@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-QUICK=true
-
+QUICK=${QUICK:-false}
 NUXEO_VERSION=${1:-8.3}
+
 # XXX Do not use CDN and switch URL if version is `-SNAPSHOT`
 NUXEO_MD5=`curl -s "http://cdn.nuxeo.com/nuxeo-${NUXEO_VERSION}/nuxeo-server-${NUXEO_VERSION}-tomcat.zip.md5" | awk  '{print \$1}'`
 
@@ -21,14 +21,14 @@ M2_LINK=$DIR/nuxeo-che/m2
 # Set -x after variables setting...
 set -x
 
-mkdir -p WORKDIR
+mkdir -p $WORKDIR
 docker build -t nuxeo-che-base nuxeo-che-base
 
 if [ -d $SOURCE_FOLDER ]; then
   cd $SOURCE_FOLDER && git checkout . && git clean -fd && git pull --rebase && cd $DIR
 else
   # XXX, we need to handle -SNAPSHOT versions
-  git clone git@github.com:nuxeo/nuxeo.git $SOURCE_FOLDER && git checkout release-$NUXEO_VERSION
+  git clone https://github.com/nuxeo/nuxeo.git $SOURCE_FOLDER && cd $SOURCE_FOLDER && git checkout release-$NUXEO_VERSION
 fi
 $QUICK || (cd $SOURCE_FOLDER && mvn install test-compile -DskipTests -Dmaven.repo.local=$M2_FOLDER && cd $DIR)
 
