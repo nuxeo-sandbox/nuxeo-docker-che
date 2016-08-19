@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+DOCKER_REGISTRY="dockerpriv.nuxeo.com"
+DOCKER_IMAGE_BASE="test/che-base"
+DOCKER_IMAGE="test/che"
+
 QUICK=${QUICK:-false}
 NUXEO_VERSION=${1:-8.3}
 
@@ -12,7 +16,7 @@ echo "MD5: $NUXEO_MD5"
 DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
 WORKDIR=$DIR/workdir
 
-SOURCE_FOLDER=$WORKDIR/nuxeo-$NUXEO_VERSION
+SOURCE_FOLDER=$WORKDIR/nuxeo-sources
 SOURCE_LINK=$DIR/nuxeo-che/nuxeo
 
 M2_FOLDER=$WORKDIR/m2-$NUXEO_VERSION
@@ -22,19 +26,27 @@ M2_LINK=$DIR/nuxeo-che/m2
 set -x
 
 mkdir -p $WORKDIR
-docker build -t nuxeo-che-base nuxeo-che-base
+docker build -t $DOCKER_IMAGE_BASE nuxeo-che-base
+docker tag $DOCKER_IMAGE_BASE $DOCKER_REGISTRY/$DOCKER_IMAGE_BASE
+docker push $DOCKER_REGISTRY/$DOCKER_IMAGE_BASE
 
 if [ -d $SOURCE_FOLDER ]; then
-  cd $SOURCE_FOLDER && git checkout . && git clean -fd && git pull --rebase && cd $DIR
+  cd $SOURCE_FOLDER && git checkout . && git clean -fd && git fetch --all && cd $DIR
 else
   # XXX, we need to handle -SNAPSHOT versions
-  git clone https://github.com/nuxeo/nuxeo.git $SOURCE_FOLDER && cd $SOURCE_FOLDER && git checkout release-$NUXEO_VERSION
+  git clone https://github.com/nuxeo/nuxeo.git $SOURCE_FOLDER 
 fi
-$QUICK || (cd $SOURCE_FOLDER && mvn install test-compile -DskipTests -Dmaven.repo.local=$M2_FOLDER && cd $DIR)
+git checkout release-$NUXEO_VERSION && git clean -fd
+
+# XXX Run maven build inside a container...
+# XXX: Must be installed: node, npm, grunt-cli, bower and gulp. Do not forget to link `nodejs` to `node` on Ubuntu.
+$QUICK || (cd $SOURCE_FOLDER && mvn install test-compile -DskipTests -Dmaven.repo.local=$M2_FOLDER)
 
 $QUICK || (rm -rf $M2_LINK && cp -R $M2_FOLDER $M2_LINK)
 $QUICK || (rm -rf $SOURCE_LINK && cp -R $SOURCE_FOLDER $SOURCE_LINK)
 
-_XX_NUXEO_VERSION=$NUXEO_VERSION _XX_NUXEO_MD5=$NUXEO_MD5 envsubst '$_XX_NUXEO_VERSION:$_XX_NUXEO_MD5' < install_nuxeo.tpl.sh > $DIR/nuxeo-che/install_nuxeo.sh
+_XX_NUXEO_VERSION=$NUXEO_VERSION _XX_NUXEO_MD5=$NUXEO_MD5 envsubst '$_XX_NUXEO_VERSION:$_XX_NUXEO_MD5' < $DIR/install_nuxeo.tpl.sh > $DIR/nuxeo-che/install_nuxeo.sh
 chmod +x $DIR/nuxeo-che/install_nuxeo.sh
-docker build -t nuxeo-che:$NUXEO_VERSION nuxeo-che
+cd $DIR && docker build -t $DOCKER_IMAGE:$NUXEO_VERSION nuxeo-che
+docker tag $DOCKER_IMAGE:$NUXEO_VERSION $DOCKER_REGISTRY/$DOCKER_IMAGE:$NUXEO_VERSION
+docker push $DOCKER_REGISTRY/$DOCKER_IMAGE:$NUXEO_VERSION

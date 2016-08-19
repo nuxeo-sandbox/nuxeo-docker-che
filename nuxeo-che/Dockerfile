@@ -1,13 +1,16 @@
 # vim:set ft=dockerfile:
-FROM nuxeo-che-base
+FROM test/che-base
 MAINTAINER Nuxeo <packagers@nuxeo.com>
 
-COPY ["nuxeo", "/projects/nuxeo"]
-COPY ["m2", "/home/nuxeo/.m2/repository"]
+COPY ["nuxeo", "/opt/nuxeo"]
+COPY ["m2", "/home/user/.m2/repository"]
 
-COPY ["install_nuxeo.sh", "/root/install_nuxeo.sh"]
-RUN  ["bash", "/root/install_nuxeo.sh"]
+COPY ["install_nuxeo.sh", "/tmp/install_nuxeo.sh"]
 
 USER $NUXEO_USER
+RUN  ["bash", "/tmp/install_nuxeo.sh"]
 
-CMD /bin/bash
+WORKDIR /projects
+
+CMD sudo /usr/sbin/sshd -D && \
+    tail -f /dev/null
