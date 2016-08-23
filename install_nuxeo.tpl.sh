@@ -11,5 +11,6 @@ curl -fsSL "http://cdn.nuxeo.com/nuxeo-${NUXEO_VERSION}/nuxeo-server-${NUXEO_VER
     && DISTDIR=$(/bin/ls /tmp/nuxeo-distribution | head -n 1) \
     && sudo mv /tmp/nuxeo-distribution/$DISTDIR $NUXEO_HOME \
     && sed -i -e "s/^org.nuxeo.distribution.package.*/org.nuxeo.distribution.package=docker/" $NUXEO_HOME/templates/common/config/distribution.properties \
+    && sed -i -e "s/^nuxeo.wizard.done.*//" $NUXEO_HOME/bin/nuxeo.conf \
     && rm -rf /tmp/nuxeo-distribution* \
     && chmod +x $NUXEO_HOME/bin/*ctl $NUXEO_HOME/bin/*.sh

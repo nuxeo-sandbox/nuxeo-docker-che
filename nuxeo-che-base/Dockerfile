@@ -13,7 +13,7 @@ ENV PATH=$M2_HOME/bin:$PATH
 # Add needed convert tools
 EXPOSE 4403 8000 8080 9876 22
 RUN apt-get update && \
-    apt-get -y install sudo openssh-server procps wget unzip mc curl subversion software-properties-common python-software-properties && \
+    apt-get -y install sudo openssh-server vim procps wget unzip mc curl subversion software-properties-common python-software-properties && \
     apt-get -y install --no-install-recommends perl git locales pwgen imagemagick ffmpeg2theora ufraw poppler-utils libreoffice libwpd-tools exiftool ghostscript subversion && \
     mkdir /var/run/sshd && \
     sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
@@ -31,7 +31,8 @@ RUN mkdir /home/$NUXEO_USER/apache-maven-$MAVEN_VERSION && \
  # Add node.js
 RUN cd /home/$NUXEO_USER && curl --insecure -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" \
     && tar -xzf "node-v$NODE_VERSION-linux-x64.tar.gz" -C /usr/local --strip-components=1 \
-    && rm -rf node-v$NODE_VERSION-linux-x64.tar.gz
+    && rm -rf node-v$NODE_VERSION-linux-x64.tar.gz \
+    && npm install -g yo generator-nuxeo grunt-cli gulp bower
 
 ONBUILD RUN apt-get update \
     && apt-get upgrade -y \
