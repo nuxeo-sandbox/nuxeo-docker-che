@@ -10,6 +10,7 @@ USER $NUXEO_USER
 RUN  bash /tmp/install_nuxeo.sh && \
      sudo chown -R user:user /home/user/.m2/ /opt/
 
+COPY ["settings.xml", "/home/user/.m2/"]
 WORKDIR /projects
 
 CMD sudo /usr/sbin/sshd -D && \

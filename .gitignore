@@ -1,6 +1,7 @@
 workdir
 nuxeo-che*/m2
 nuxeo-che*/nuxeo
+nuxeo-che*/install_nuxeo.sh
 
 # swap
 [._]*.s[a-w][a-z]
