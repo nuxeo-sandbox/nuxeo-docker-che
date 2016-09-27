@@ -1,12 +1,12 @@
-DOCKER_REGISTRY="dockerpriv.nuxeo.com"
-DOCKER_IMAGE_BASE="test/che-base"
-DOCKER_IMAGE="test/che"
+DOCKER_REGISTRY=${DOCKER_REGISTRY:-""}
+DOCKER_IMAGE_BASE=${DOCKER_IMAGE_BASE:-"nuxeo/che-base"}
+DOCKER_IMAGE=${DOCKER_IMAGE:-"nuxeo/che-workspace"}
 
 QUICK=${QUICK:-false}
 # Latest version should be tired from connect TP
-NUXEO_VERSION=${1:-8.3}
+NUXEO_VERSION=${1:-master}
 
-if [[ "${NUXEO_VERSION}" =~ ^([0-9\.]+)-SNAPSHOT$ ]];
+if [[ "${NUXEO_VERSION}" =~ ^([0-9\.]+)-SNAPSHOT$ ]] || [[ "${NUXEO_VERSION}" =~ ^master$ ]];
 then
   # Snapshot version; use static to resolve MD5
   NUXEO_MD5_URL=`curl -Ls -o /dev/null -w %{url_effective} http://community.nuxeo.com/static/latest-snapshot/nuxeo,tomcat,md5,${BASH_REMATCH[1]}`
@@ -57,14 +57,19 @@ cd $SOURCE_FOLDER
 # Use the tag if version is not snapshot; takes the branch otherwise
 if [[ "${NUXEO_VERSION}" =~ ^([0-9\.]+)-SNAPSHOT$ ]];
 then
-  if [ `git branch --list ${BASH_REMATCH[1]} `]; then
+  if [ `git branch --list ${BASH_REMATCH[1]}` ]; then
     GIT_REF=${BASH_REMATCH[1]}
-  else
-    echo "Fallback on master branch with version ${NUXEO_VERSION}"
-    GIT_REF="master"
   fi
 else
-  GIT_REF="release-$NUXEO_VERSION"
+  if [[ "${NUXEO_VERSION}" =~ ^([0-9\.]+)$ ]]; then
+    GIT_REF="release-$NUXEO_VERSION"
+  else
+    GIT_REF=${NUXEO_VERSION}
+  fi
+fi
+if [ -z $GIT_REF ]; then
+  echo "Unable to resolve a git reference for version: ${NUXEO_VERSION}"
+  exit 2
 fi
 git checkout ${GIT_REF} && git clean -fd
 
