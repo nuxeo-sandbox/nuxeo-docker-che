@@ -75,8 +75,6 @@ git checkout ${GIT_REF} && git clean -fd
 
 # XXX Run maven build inside a container...
 # XXX: Must be installed: node, npm, grunt-cli, bower and gulp. Do not forget to link `nodejs` to `node` on Ubuntu.
-$QUICK || (mvn clean install process-test-classes -DskipTests -Dmaven.repo.local=$M2_FOLDER)
-
 $QUICK || (rm -rf $M2_LINK && cp -R $M2_FOLDER $M2_LINK)
 $QUICK || (rm -rf $SOURCE_LINK && cp -R $SOURCE_FOLDER $SOURCE_LINK)
 

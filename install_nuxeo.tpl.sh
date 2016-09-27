@@ -1,4 +1,4 @@
-#/bin/bash -ex
+#!/bin/bash -ex
 
 export NUXEO_MD5=$_XX_NUXEO_MD5
 export NUXEO_URL=$_XX_NUXEO_URL
@@ -16,3 +16,5 @@ curl -fsSL "${NUXEO_URL}" -o /tmp/nuxeo-distribution-tomcat.zip \
     && sed -i -e "s/^#?\(JAVA_OPTS=.*-Xdebug -Xrunjdwp.*\)$/\1/g" $NUXEO_HOME/bin/nuxeo.conf \
     && rm -rf /tmp/nuxeo-distribution* \
     && chmod +x $NUXEO_HOME/bin/*ctl $NUXEO_HOME/bin/*.sh
+
+cd /opt/nuxeo && mvn clean install process-test-classes -DskipTests
