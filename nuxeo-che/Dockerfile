@@ -1,5 +1,5 @@
 # vim:set ft=dockerfile:
-FROM test/che-base
+FROM nuxeo/che-base
 MAINTAINER Nuxeo <packagers@nuxeo.com>
 
 COPY ["install_nuxeo.sh", "/tmp/install_nuxeo.sh"]
