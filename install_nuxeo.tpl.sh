@@ -17,4 +17,4 @@ curl -fsSL "${NUXEO_URL}" -o /tmp/nuxeo-distribution-tomcat.zip \
     && rm -rf /tmp/nuxeo-distribution* \
     && chmod +x $NUXEO_HOME/bin/*ctl $NUXEO_HOME/bin/*.sh
 
-cd /opt/nuxeo && sudo mvn clean install process-test-classes -DskipTests
+cd /opt/nuxeo && mvn clean install process-test-classes -DskipTests

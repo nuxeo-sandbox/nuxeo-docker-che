@@ -1,3 +1,5 @@
+#!/bin/bash -ex
+
 DOCKER_REGISTRY=${DOCKER_REGISTRY:-""}
 DOCKER_IMAGE_BASE=${DOCKER_IMAGE_BASE:-"nuxeo/che-base"}
 DOCKER_IMAGE=${DOCKER_IMAGE:-"nuxeo/che-workspace"}
@@ -42,7 +44,7 @@ set -x
 
 mkdir -p $WORKDIR
 docker build -t $DOCKER_IMAGE_BASE nuxeo-che-base
-docker tag $DOCKER_IMAGE_BASE $DOCKER_REGISTRY/$DOCKER_IMAGE_BASE
+docker tag $DOCKER_IMAGE_BASE $DOCKER_REGISTRY$DOCKER_IMAGE_BASE
 #docker push $DOCKER_REGISTRY/$DOCKER_IMAGE_BASE
 
 if [ -d $SOURCE_FOLDER ]; then
@@ -75,13 +77,12 @@ git checkout ${GIT_REF} && git clean -fd
 
 # XXX Run maven build inside a container...
 # XXX: Must be installed: node, npm, grunt-cli, bower and gulp. Do not forget to link `nodejs` to `node` on Ubuntu.
-$QUICK || (rm -rf $M2_LINK && cp -R $M2_FOLDER $M2_LINK)
 $QUICK || (rm -rf $SOURCE_LINK && cp -R $SOURCE_FOLDER $SOURCE_LINK)
 
 _XX_NUXEO_URL=$NUXEO_URL _XX_NUXEO_MD5=$NUXEO_MD5 envsubst '$_XX_NUXEO_URL:$_XX_NUXEO_MD5' < $DIR/install_nuxeo.tpl.sh > $DIR/nuxeo-che/install_nuxeo.sh
 chmod +x $DIR/nuxeo-che/install_nuxeo.sh
 cd $DIR && docker build -t $DOCKER_IMAGE:$NUXEO_VERSION nuxeo-che
-docker tag $DOCKER_IMAGE:$NUXEO_VERSION $DOCKER_REGISTRY/$DOCKER_IMAGE:$NUXEO_VERSION
+docker tag $DOCKER_IMAGE:$NUXEO_VERSION $DOCKER_REGISTRY$DOCKER_IMAGE:$NUXEO_VERSION
 # docker push $DOCKER_REGISTRY/$DOCKER_IMAGE:$NUXEO_VERSION
 
 
