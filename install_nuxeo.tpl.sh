@@ -19,4 +19,4 @@ curl -fsSL "${NUXEO_URL}" -o /tmp/nuxeo-distribution-tomcat.zip \
 
 # Ensure all userland directories have good rights
 sudo chown -R user:user /home/user/.m2/ /opt/
-cd /opt/nuxeo && su user -c "$M2_HOME/bin/mvn clean install process-test-classes -DskipTests"
+cd /opt/nuxeo && su user -c "PATH=$PATH:$M2_HOME/bin mvn clean install process-test-classes -DskipTests"
