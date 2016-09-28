@@ -17,4 +17,6 @@ curl -fsSL "${NUXEO_URL}" -o /tmp/nuxeo-distribution-tomcat.zip \
     && rm -rf /tmp/nuxeo-distribution* \
     && chmod +x $NUXEO_HOME/bin/*ctl $NUXEO_HOME/bin/*.sh
 
-cd /opt/nuxeo && mvn clean install process-test-classes -DskipTests
+# Ensure all userland directories have good rights
+sudo chown -R user:user /home/user/.m2/ /opt/
+cd /opt/nuxeo && su user -c "$M2_HOME/bin/mvn clean install process-test-classes -DskipTests"
