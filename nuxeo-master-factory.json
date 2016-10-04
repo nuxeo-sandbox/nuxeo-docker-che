@@ -1,0 +1,102 @@
+{
+    "v": "4.0",
+    "name": "nuxeo-factory",
+    "workspace": {
+        "defaultEnv": "wksp-z3i1",
+        "environments": {
+            "wksp-z3i1": {
+                "machines": {
+                    "dev-machine": {
+                        "attributes": {
+                            "memoryLimitBytes": "3221225472"
+                        },
+                        "servers": {},
+                        "agents": [
+                            "org.eclipse.che.ws-agent",
+                            "org.eclipse.che.terminal",
+                            "org.eclipse.che.ssh"
+                        ]
+                    }
+                },
+                "recipe": {
+                    "type": "dockerfile",
+                    "content": "FROM quay.io/akervern/nuxeo-che:latest",
+                    "contentType": "text/x-dockerfile"
+                }
+            }
+        },
+        "projects": [
+            {
+                "links": [],
+                "name": "nuxeo",
+                "attributes": {
+                    "contribute_to_branch": [
+                        "master"
+                    ]
+                },
+                "type": "maven",
+                "source": {
+                    "location": "https://github.com/akervern/test-che",
+                    "type": "github",
+                    "parameters": {}
+                },
+                "path": "/nuxeo",
+                "problems": [],
+                "mixins": [
+                    "pullrequest"
+                ]
+            }
+        ],
+        "name": "wksp-z3i1",
+        "commands": [
+            {
+                "commandLine": "if [ ! -d /projects/nuxeo/nuxeo-core ]; then cp -Rf /opt/nuxeo/* /opt/nuxeo/.* /projects/nuxeo/; fi",
+                "name": "99. Init Nuxeo Sources",
+                "attributes": {
+                    "previewUrl": ""
+                },
+                "type": "custom"
+            },
+            {
+                "name": "1. Build Project",
+                "commandLine": "mvn clean install -f ${current.project.path}",
+                "type": "mvn",
+                "attributes": {}
+            },
+            {
+                "name": "2. Run Nuxeo in Console",
+                "commandLine": "/opt/server/bin/nuxeoctl console",
+                "type": "custom",
+                "attributes": {
+                    "previewUrl": ""
+                }
+            },
+            {
+                "name": "3. Restart Nuxeo",
+                "commandLine": "/opt/server/bin/nuxeoctl restart",
+                "type": "custom",
+                "attributes": {
+                    "previewUrl": ""
+                }
+            }
+        ],
+        "links": []
+    },
+    "id": "r3pbh9wv7tjvbws7",
+    "ide": {
+        "onProjectsLoaded": {
+            "actions": [
+                {
+                    "properties": {
+                        "name": "99. Init Nuxeo Sources"
+                    },
+                    "id": "runCommand"
+                }
+            ]
+        }
+    },
+    "creator": {
+        "created": 1474491216008,
+        "userId": "userl4a4mmalpfeh6aab"
+    }
+}
