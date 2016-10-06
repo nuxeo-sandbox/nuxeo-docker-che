@@ -46,44 +46,5 @@ set -x
 
 mkdir -p $WORKDIR
 docker build -t $DOCKER_IMAGE_BASE nuxeo-che-base
-tail -f /dev/null # PGM-Blocking
+#tail -f /dev/null # PGM-Blocking
 ! ${PUSH} || docker push $DOCKER_IMAGE_BASE
-
-if [ -d $SOURCE_FOLDER ]; then
-  cd $SOURCE_FOLDER && git checkout . && git clean -fd && git fetch --all
-else
-  # XXX, we need to handle -SNAPSHOT versions
-  git clone https://github.com/nuxeo/nuxeo.git $SOURCE_FOLDER
-fi
-cd $SOURCE_FOLDER
-
-# Checkout sources
-# Use the tag if version is not snapshot; takes the branch otherwise
-if [[ "${NUXEO_VERSION}" =~ ^([0-9\.]+)-SNAPSHOT$ ]];
-then
-  if [ `git branch --list ${BASH_REMATCH[1]}` ]; then
-    GIT_REF=${BASH_REMATCH[1]}
-  fi
-else
-  if [[ "${NUXEO_VERSION}" =~ ^([0-9\.]+)$ ]]; then
-    GIT_REF="release-$NUXEO_VERSION"
-  else
-    GIT_REF=${NUXEO_VERSION}
-  fi
-fi
-if [ -z $GIT_REF ]; then
-  echo "Unable to resolve a git reference for version: ${NUXEO_VERSION}"
-  exit 2
-fi
-git checkout ${GIT_REF} && git clean -fd
-
-# XXX Run maven build inside a container...
-# XXX: Must be installed: node, npm, grunt-cli, bower and gulp. Do not forget to link `nodejs` to `node` on Ubuntu.
-$QUICK || (rm -rf $SOURCE_LINK && cp -R $SOURCE_FOLDER $SOURCE_LINK)
-
-_XX_NUXEO_URL=$NUXEO_URL _XX_NUXEO_MD5=$NUXEO_MD5 envsubst '$_XX_NUXEO_URL:$_XX_NUXEO_MD5' < $DIR/install_nuxeo.tpl.sh > $DIR/nuxeo-che/install_nuxeo.sh
-chmod +x $DIR/nuxeo-che/install_nuxeo.sh
-cd $DIR && docker build -t $DOCKER_IMAGE:$NUXEO_VERSION nuxeo-che
-! ${PUSH} || docker push $DOCKER_IMAGE:$NUXEO_VERSION
-
-
