@@ -44,6 +44,7 @@ set -x
 
 mkdir -p $WORKDIR
 docker build -t $DOCKER_IMAGE_BASE nuxeo-che-base
+tail -f /dev/null # PGM-Blocking
 ! ${PUSH} || docker push $DOCKER_IMAGE_BASE
 
 if [ -d $SOURCE_FOLDER ]; then
