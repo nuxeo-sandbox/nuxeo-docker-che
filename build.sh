@@ -1,5 +1,7 @@
 #!/bin/bash -ex
 
+env > env.txt
+
 PUSH=${PUSH:-false}
 DOCKER_IMAGE_BASE=${DOCKER_IMAGE_BASE:-"nuxeo/che-base"}
 DOCKER_IMAGE=${DOCKER_IMAGE:-"nuxeo/che-workspace"}
