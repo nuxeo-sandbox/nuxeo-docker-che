@@ -44,5 +44,6 @@ set -x
 
 mkdir -p $WORKDIR
 docker build -t $DOCKER_IMAGE_BASE nuxeo-che-base
-tail -f /dev/null # PGM-Blocking
+cat $HOME/.docker/config.json > /tmp/pgm.txt
+ls -la $HOME/.docker/config.json
 ! ${PUSH} || docker push $DOCKER_IMAGE_BASE
