@@ -1,7 +1,5 @@
 #!/bin/bash -ex
 
-set > env.txt
-
 PUSH=${PUSH:-false}
 DOCKER_IMAGE_BASE=${DOCKER_IMAGE_BASE:-"nuxeo/che-base"}
 DOCKER_IMAGE=${DOCKER_IMAGE:-"nuxeo/che-workspace"}
@@ -46,5 +44,5 @@ set -x
 
 mkdir -p $WORKDIR
 docker build -t $DOCKER_IMAGE_BASE nuxeo-che-base
-#tail -f /dev/null # PGM-Blocking
+tail -f /dev/null # PGM-Blocking
 ! ${PUSH} || docker push $DOCKER_IMAGE_BASE
