@@ -1,12 +1,12 @@
 # Nuxeo's Codenvy Development Environment
 
-Welcome to the Nuxeo Codenvy development environment, it will help you navigating through the Nuxeo Source Code and deploy your code.
+Welcome to the Nuxeo Codenvy development environment, it will help you navigating through the Nuxeo Source Code and deploy your code. It contains the whole sources based on the `master` branch, and the corresponding Nuxeo Platform ready to run.
 
 # Commands Descriptions:
 
 - **Test Project**: Run a Maven `test` command on the current project
 - **Build Project**: Run a Maven `install` command on the current project
-- **Deploy Project**: Run a Maven `install` command on the current project, copy output jars and restart the Nuxeo Platform
+- **Deploy Project**: Run a Maven `install` command on the current project, copy output jars. Server must be restarted after that.
 - **Run Nuxeo**: Start the Nuxeo Platform, then follow the logs on the current tab
 - **Restart Nuxeo**: Restart the Nuxeo Platform
 
