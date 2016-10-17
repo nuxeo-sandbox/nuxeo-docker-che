@@ -25,6 +25,23 @@ The project is splitted in several sub-modules (listed in dependency order):
 - **nuxeo-dm**: The default Nuxeo Platform application, mostly configuration and UI elements
 - **nuxeo-distribution**: This module builds, packages and tests the Nuxeo products.
 
+# Resources
+
+## Documentation
+
+The documentation for the Nuxeo Platform is available in our [Documentation Center](http://doc.nuxeo.com):
+
+* [Developer documentation](http://doc.nuxeo.com/x/PIAO)
+* [Developer Guide, instructions and guidelines](http://doc.nuxeo.com/x/B4BH)
+* [Admin documentation](http://doc.nuxeo.com/x/G4AO)
+* [User documentation](http://doc.nuxeo.com/x/6ICo)
+
+## Reporting issues
+
+You can follow the developments in the Nuxeo Platform project of our JIRA bug tracker: [https://jira.nuxeo.com/browse/NXP/](https://jira.nuxeo.com/browse/NXP/).
+
+You can report issues on [answers.nuxeo.com](http://answers.nuxeo.com).
+
 # Licensing
 
 Most of the source code in the Nuxeo Platform is copyright Nuxeo SA and contributors, and licensed under the GNU Lesser General Public License v2.1.
