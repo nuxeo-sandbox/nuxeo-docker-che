@@ -20,7 +20,7 @@ The project is splitted in several sub-modules (listed in dependency order):
 - **nuxeo-services**: Basic services such as file manager, directories, document types
 - **nuxeo-theme**: Services related to the theme and theme rendering
 - **nuxeo-jsf**: JSF related services
-- **nuxeo-webengine**: Services and framework related to WebEngine, the Nuxeo lighweight rendering engine
+- **nuxeo-webengine**: Services and framework related to WebEngine, the Nuxeo lightweight rendering engine
 - **nuxeo-features**: Advanced high-level services, such as audit, imaging, publisher, thumbnails, search
 - **nuxeo-dm**: The default Nuxeo Platform application, mostly configuration and UI elements
 - **nuxeo-distribution**: This module builds, packages and tests the Nuxeo products.
