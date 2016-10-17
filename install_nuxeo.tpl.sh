@@ -11,7 +11,6 @@ curl -fsSL "${NUXEO_URL}" -o /tmp/nuxeo-distribution-tomcat.zip \
     && unzip -q -d /tmp/nuxeo-distribution /tmp/nuxeo-distribution-tomcat.zip \
     && DISTDIR=$(/bin/ls /tmp/nuxeo-distribution | head -n 1) \
     && sudo mv /tmp/nuxeo-distribution/$DISTDIR $NUXEO_HOME  \
-    && sed -i -e "s/^nuxeo.wizard.done.*//" $NUXEO_HOME/bin/nuxeo.conf \
     && sed -i -e "s/^#?\(facelets.REFRESH_PERIOD=.*\)$/\1/g" $NUXEO_HOME/bin/nuxeo.conf \
     && sed -i -e "s/^#?\(JAVA_OPTS=.*-Xdebug -Xrunjdwp.*\)$/\1/g" $NUXEO_HOME/bin/nuxeo.conf \
     && rm -rf /tmp/nuxeo-distribution* \
