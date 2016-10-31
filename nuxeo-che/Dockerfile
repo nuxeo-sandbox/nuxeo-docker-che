@@ -2,7 +2,6 @@
 FROM nuxeo/che-base
 MAINTAINER Nuxeo <packagers@nuxeo.com>
 
-COPY ["nuxeo", "/opt/nuxeo"]
 COPY ["README.md", "/opt/README.md"]
 COPY ["install_nuxeo.sh", "/tmp/install_nuxeo.sh"]
 COPY ["settings.xml", "/home/user/.m2/"]

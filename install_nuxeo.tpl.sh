@@ -2,6 +2,7 @@
 
 export NUXEO_MD5=$_XX_NUXEO_MD5
 export NUXEO_URL=$_XX_NUXEO_URL
+export NUXEO_GITREF=$_XX_NUXEO_GITREF
 export NUXEO_HOME=/opt/server
 
 # curl -fsSL "http://cdn.nuxeo.com/nuxeo-${NUXEO_VERSION}/nuxeo-server-${NUXEO_VERSION}-tomcat.zip" -o /tmp/nuxeo-distribution-tomcat.zip \
@@ -18,4 +19,5 @@ curl -fsSL "${NUXEO_URL}" -o /tmp/nuxeo-distribution-tomcat.zip \
 
 # Ensure all userland directories have good rights
 sudo chown -R user:user /home/user/.m2/ /opt/
+su user -c "git clone https://github.com/nuxeo/nuxeo.git /opt/nuxeo && cd /opt/nuxeo && git checkout ${NUXEO_GITREF}"
 cd /opt/nuxeo && su user -c "PATH=$PATH:$M2_HOME/bin mvn clean install process-test-classes -DskipTests"
