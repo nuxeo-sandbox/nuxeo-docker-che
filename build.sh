@@ -65,7 +65,7 @@ if [ -z $GIT_REF ]; then
   exit 2
 fi
 
-_XX_NUXEO_GITREF=$GIT_REF _XX_NUXEO_URL=$NUXEO_URL _XX_NUXEO_MD5=$NUXEO_MD5 envsubst '$_XX_NUXEO_URL:$_XX_NUXEO_MD5' < $DIR/install_nuxeo.tpl.sh > $DIR/nuxeo-che/install_nuxeo.sh
+_XX_NUXEO_GITREF=$GIT_REF _XX_NUXEO_URL=$NUXEO_URL _XX_NUXEO_MD5=$NUXEO_MD5 envsubst '$_XX_NUXEO_URL:$_XX_NUXEO_MD5:$_XX_NUXEO_GITREF' < $DIR/install_nuxeo.tpl.sh > $DIR/nuxeo-che/install_nuxeo.sh
 chmod +x $DIR/nuxeo-che/install_nuxeo.sh
 cd $DIR && docker build -t $DOCKER_IMAGE:$NUXEO_VERSION nuxeo-che
 ! ${PUSH} || docker push $DOCKER_IMAGE:$NUXEO_VERSION
