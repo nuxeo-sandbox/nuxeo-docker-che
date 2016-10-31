@@ -19,5 +19,5 @@ curl -fsSL "${NUXEO_URL}" -o /tmp/nuxeo-distribution-tomcat.zip \
 
 # Ensure all userland directories have good rights
 sudo chown -R user:user /home/user/.m2/ /opt/
-su user -c "git clone https://github.com/nuxeo/nuxeo.git /opt/nuxeo && cd /opt/nuxeo && git checkout ${NUXEO_GITREF}"
-cd /opt/nuxeo && su user -c "PATH=$PATH:$M2_HOME/bin mvn clean install process-test-classes -DskipTests"
+su user -c "git clone https://github.com/nuxeo/nuxeo.git /opt/nuxeo && cd /opt/nuxeo && git checkout ${NUXEO_GITREF} && git clean -fd"
+cd /opt/nuxeo && su user -c "PATH=$PATH:$M2_HOME/bin mvn install process-test-classes -DskipTests"
