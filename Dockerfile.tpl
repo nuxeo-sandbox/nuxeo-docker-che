@@ -1,12 +1,12 @@
 # vim:set ft=dockerfile:
-FROM nuxeo:8.10
+FROM nuxeo/nuxeo:$_XX_PARENT_VERSION
 MAINTAINER Nuxeo <packagers@nuxeo.com>
 
 ENV CHE_USER=user \
     NUXEO_USER=user \
-    NODE_VERSION=7.4.0 \
+    NODE_VERSION=$_XX_NODE_VERSION \
     NODE_PATH=/usr/local/lib/node_modules \
-    MAVEN_VERSION=3.3.9
+    MAVEN_VERSION=$_XX_MAVEN_VERSION
 
 ENV M2_HOME=/home/$CHE_USER/apache-maven-$MAVEN_VERSION
 ENV PATH=$M2_HOME/bin:$PATH
