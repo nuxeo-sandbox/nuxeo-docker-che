@@ -17,6 +17,8 @@ if [[ ${NUXEO_VERSION} =~ ^[1-9][0-9]*\.[0-9]+(\.[0-9]+)?$ ]]; then
 else
   NUXEO_GITREF='master'
   DOCKER_PARAMS='--no-cache'
+  # Ensure to have the latest master build
+  docker pull nuxeo/nuxeo:${NUXEO_VERSION}
 fi
 
 DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
