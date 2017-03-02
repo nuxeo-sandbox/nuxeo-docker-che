@@ -14,7 +14,7 @@ ENV PATH=$M2_HOME/bin:$PATH
 # Add needed convert tools
 EXPOSE 4403 8000 8080 8787 9876 22
 RUN apt-get update && \
-    apt-get -y install sudo openssh-server vim procps wget unzip mc curl git software-properties-common python-software-properties && \
+    apt-get -y install sudo openssh-server rsync vim procps wget unzip mc curl git software-properties-common python-software-properties && \
     mkdir /var/run/sshd && \
     sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
     echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
