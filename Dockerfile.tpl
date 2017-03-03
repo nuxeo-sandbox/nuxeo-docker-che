@@ -45,5 +45,4 @@ COPY ["docker-entrypoint.sh", "/docker-entrypoint.sh"]
 USER user
 WORKDIR /projects
 ENTRYPOINT ["/entrypoint.sh"]
-CMD sudo /usr/sbin/sshd -D && \
-    tail -f /dev/null
+CMD tail -f /dev/null
