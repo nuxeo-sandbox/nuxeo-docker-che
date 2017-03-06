@@ -28,6 +28,6 @@ _XX_PARENT_VERSION=${NUXEO_VERSION} _XX_MAVEN_VERSION=${MAVEN_VERSION} _XX_NODE_
 _XX_NUXEO_GITREF=${NUXEO_GITREF} envsubst '$_XX_NUXEO_GITREF' < $DIR/install_nuxeo.tpl.sh > $DIR/nuxeo-che/install_nuxeo.sh
 
 chmod +x $DIR/nuxeo-che/install_nuxeo.sh
-cd $DIR && docker build ${DOCKER_PARAMS} -t $DOCKER_IMAGE:$DOCKER_TAG nuxeo-che
+cd $DIR && docker build --no-cache ${DOCKER_PARAMS} -t $DOCKER_IMAGE:$DOCKER_TAG nuxeo-che
 ! ${PUSH} || docker push $DOCKER_IMAGE:$DOCKER_TAG
 
