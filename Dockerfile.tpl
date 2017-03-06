@@ -31,7 +31,7 @@ RUN mkdir /home/$CHE_USER/apache-maven-$MAVEN_VERSION && \
     cd /home/$CHE_USER && curl --insecure -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" \
     && tar -xzf "node-v$NODE_VERSION-linux-x64.tar.gz" -C /usr/local --strip-components=1 \
     && rm -rf node-v$NODE_VERSION-linux-x64.tar.gz \
-    && npm install -g yo generator-nuxeo grunt-cli gulp bower
+    && npm install -g nuxeo-cli grunt-cli gulp bower
 
 COPY ["README.md", "/opt/README.md"]
 COPY ["install_nuxeo.sh", "/tmp/install_nuxeo.sh"]
