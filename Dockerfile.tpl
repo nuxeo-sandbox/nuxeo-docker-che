@@ -2,6 +2,7 @@
 FROM nuxeo/nuxeo:$_XX_PARENT_VERSION
 MAINTAINER Nuxeo <packagers@nuxeo.com>
 
+USER root
 ENV CHE_USER=user \
     NUXEO_USER=user \
     NODE_VERSION=$_XX_NODE_VERSION \
