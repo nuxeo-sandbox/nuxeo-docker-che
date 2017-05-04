@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-
+NUXEO_CTL=${NUXEO_HOME}/bin/nuxeoctl
 NUXEO_DATA=${NUXEO_DATA:-/var/lib/nuxeo/data}
 NUXEO_LOG=${NUXEO_LOG:-/var/log/nuxeo}
 
@@ -38,7 +38,7 @@ EOF
   for f in /docker-entrypoint-initnuxeo.d/*; do
     case "$f" in
       *.sh)  echo "$0: running $f"; . "$f" ;;
-      *.zip) echo "$0: installing Nuxeo package $f"; nuxeoctl mp-install $f ${NUXEO_MPINSTALL_OPTIONS} --accept=true ;;
+      *.zip) echo "$0: installing Nuxeo package $f"; $NUXEO_CTL mp-install $f ${NUXEO_MPINSTALL_OPTIONS} --accept=true ;;
       instance.clid) echo "$0: moving clid to $NUXEO_DATA"; mv $f $NUXEO_DATA/instance.clid ;;
       *)     echo "$0: ignoring $f" ;;
     esac
@@ -53,21 +53,17 @@ EOF
 
   ## Executed at each start
   if [ -n "$NUXEO_CLID"  ] && [ ${NUXEO_INSTALL_HOTFIX:='true'} == "true" ]; then
-      nuxeoctl mp-hotfix --accept=true
+      $NUXEO_CTL mp-hotfix --accept=true
   fi
 
   # Install packages if exist
   if [ -n "$NUXEO_PACKAGES" ]; then
-    nuxeoctl mp-install $NUXEO_PACKAGES $NUXEO_MPINSTALL_OPTIONS --accept=true
+    $NUXEO_CTL mp-install $NUXEO_PACKAGES $NUXEO_MPINSTALL_OPTIONS --accept=true
   fi
 
-  if [ "$2" = "console" ]; then
-    exec nuxeoctl console
-  else
-    exec "$@"
-  fi
+  shift
+  exec $NUXEO_CTL $@
 
 fi
-
 
 exec "$@"

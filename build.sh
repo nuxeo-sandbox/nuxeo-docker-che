@@ -10,13 +10,10 @@ MAVEN_VERSION=${MAVEN_VERSION:-"3.3.9"}
 DOCKER_TAG=${NUXEO_VERSION:-"latest"}
 NUXEO_VERSION=${NUXEO_VERSION:-"master"}
 
-DOCKER_PARAMS=""
-
 if [[ ${NUXEO_VERSION} =~ ^[1-9][0-9]*\.[0-9]+(\.[0-9]+)?$ ]]; then
   NUXEO_GITREF="release-${NUXEO_VERSION}"
 else
   NUXEO_GITREF='master'
-  DOCKER_PARAMS='--no-cache'
   # Ensure to have the latest master build
   docker pull nuxeo/nuxeo:${NUXEO_VERSION}
 fi

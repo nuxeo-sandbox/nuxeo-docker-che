@@ -3,8 +3,7 @@ FROM nuxeo/nuxeo:$_XX_PARENT_VERSION
 MAINTAINER Nuxeo <packagers@nuxeo.com>
 
 USER root
-ENV CHE_USER=user \
-    NUXEO_USER=user \
+ENV CHE_USER=$NUXEO_USER \
     NODE_VERSION=$_XX_NODE_VERSION \
     NODE_PATH=/usr/local/lib/node_modules \
     MAVEN_VERSION=$_XX_MAVEN_VERSION
@@ -39,11 +38,12 @@ COPY ["install_nuxeo.sh", "/tmp/install_nuxeo.sh"]
 COPY ["settings.xml", "/home/user/.m2/"]
 
 RUN  bash /tmp/install_nuxeo.sh
-  
+
 COPY ["entrypoint.sh", "/entrypoint.sh"]
 # XXX Override default nuxeo docker-entrypoint.sh file
 COPY ["docker-entrypoint.sh", "/docker-entrypoint.sh"]
-USER user
+RUN chown -R $CHE_USER:0 /*entrypoint* && chmod -R g+rwX /*entrypoint*
+USER 1000
 WORKDIR /projects
 ENTRYPOINT ["/entrypoint.sh"]
 CMD tail -f /dev/null
